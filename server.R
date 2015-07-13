@@ -10,6 +10,7 @@ shinyServer(function(input, output) {
     # Plot all the means and intervals:
     errbar(x=1:num_means, 
            y=intervals[, "sample_mean"], 
+           ylim = input$RangoX,
            yminus=intervals[, "l_limit"], 
            yplus=intervals[, "u_limit"], 
            pch="+", col="gray", cex.lab=1.0, cex.axis=0.8,
@@ -22,7 +23,7 @@ shinyServer(function(input, output) {
     #	Plot the line through the middle
     abline(h=true_mean,col="black",lty=2)
     #	Add a title
-    title(main=paste(num_means, "Intervalos de confianza del ", (1-alpha)*100, "%"), cex.main=0.8)
+    title(main=paste(num_means, "Intervalos de confianza del ", (1-alpha)*100, "%"), cex.main=1)
   }
   
   calculate_misses <- function(intervals, true_mean){
