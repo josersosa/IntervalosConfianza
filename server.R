@@ -4,6 +4,19 @@ library(Hmisc)
 # Definición de la aplicación servidor
 shinyServer(function(input, output) {
   actPanel <- "0"
+  alpha <- 0.1
+  mu <- 40
+  sigma <- 10
+  msize <- 30
+  media_m <- 40
+  s <- 10
+  sd_m <- s/sqrt(msize)
+  
+  cert <- 1- alpha
+  delta <- qt(p=1-alpha/2, df=msize-1) * sd_m
+  ic_inf <- media_m - delta
+  ic_sup <- media_m + delta
+  
   plot_CIs <- function(intervals, true_mean, sample_size, alpha) {
     colnames(intervals) <- c("sample_mean", "l_limit", "u_limit")
     num_means <- nrow(intervals)
@@ -89,7 +102,10 @@ shinyServer(function(input, output) {
       CIs[i, 2] <- CIs[i, 1] - delta
       CIs[i, 3] <- CIs[i, 1] + delta
     }
-    h <- hist(CIs[,1], prob=TRUE, col="yellow", main=paste("Distribución de las medias muestrales de ", num_CIs, " muestras de tamaño ",msize), 
+    h <- hist(CIs[,1], prob=TRUE, col="yellow", 
+              main=paste("Distribución de las medias muestrales de ", num_CIs, " muestras de tamaño ",msize), 
+              xlim = input$RangoX,
+              ylim = c(0,0.5),
               xlab="Medias muestrales")
     m <- mean(CIs[,1])
     s <- sd(CIs[,1])
@@ -125,7 +141,28 @@ shinyServer(function(input, output) {
   # Despliegue de las ecuaciones
   output$Ecuaciones <- renderUI({
     actPanel <- "Ecuaciones"
-    
+    alpha <- input$alpha
+    n <- input$n
+    if(n<100){
+      withMathJax(
+        sprintf('Tamaño de la muestra: $$n = %d$$',n),
+        sprintf('Nivel de confianza: $$1-\\alpha = %.02f$$', 1-alpha),
+        sprintf('Media muestral: $$\\bar{X} = \\frac{\\sum_{i=1}^n x_i}{n}$$'),
+        sprintf('Varianza muestral: $$s^2 = \\frac{\\sum_{i=1}^n (x_i-\\bar{X})^2}{n-1} $$'),
+        sprintf('Distribución de la Media muestral: $$\\frac{\\bar{X}-\\mu}{\\frac{s}{\\sqrt{n}}} \\sim T \\ de \\ Student(n-1)$$'),
+        sprintf('Intervalo de confianza para \\(\\mu\\): $$IC_{1-\\alpha}=[\\bar{X} \\pm T_{1-\\frac{\\alpha}{2},n-1}\\frac{s}{\\sqrt{n}} ]$$')
+      )
+    }
+    else{
+      withMathJax(
+        sprintf('Tamaño de la muestra: $$n = %d$$',n),
+        sprintf('Nivel de confianza: $$1-\\alpha = %.02f$$', 1-alpha),
+        sprintf('Media muestral: $$\\bar{X} = \\frac{\\sum_{i=1}^n x_i}{n}$$'),
+        sprintf('Varianza muestral: $$s^2 = \\frac{\\sum_{i=1}^n (x_i-\\bar{X})^2}{n-1} $$'),
+        sprintf('Distribución de la Media muestral: $$\\frac{\\bar{X}-\\mu}{\\frac{s}{\\sqrt{n}}} \\approx Normal(0,1)$$'),
+        sprintf('Intervalo de confianza para \\(\\mu\\): $$IC_{1-\\alpha}=[\\bar{X} \\pm Z_{1-\\frac{\\alpha}{2}}\\frac{s}{\\sqrt{n}} ]$$')
+      )
+    }
     
   })
 

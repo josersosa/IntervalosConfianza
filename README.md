@@ -5,13 +5,14 @@ Recurso digital para el aprendizaje del concepto de los intervalos de confianza.
 
 **Objetivo**
 
-Esta aplicación intenta representar gráficamente los fundamentos del cálculo de los intervalos de confianza. En particular, se muestra una representación gráfica de las visiones frecuentista y probabilistica del intervalo de confianza para la media de una población, con varianza desconocida, a partir de una muestra aleatoria te mamaño n. 
+Esta aplicación intenta representar gráficamente los fundamentos del cálculo de los intervalos de confianza. En particular, se muestra una representación gráfica de las visiones frecuentista y probabilistica del intervalo de confianza para la media de una población, con varianza desconocida, a partir de una muestra aleatoria te tamaño n. 
 
-Para esto, la aplicación genera inicialmente una población de 10.000 observaciones con una distribución conocida, y a partir de ahí se crean las muestras para construir los intervalos.
+Para esto, la aplicación genera inicialmente una población de 10.000 observaciones con una distribución normal conocida, y a partir de ahí se crean las muestras para construir los intervalos.
 
 **Requisitos**
 
 La aplicación está desarrollada en R, por lo que se requiere para su ejecución, tener instalado este lenguaje ([www.r-project.org](https://cran.rstudio.com/)) y [RStudio](https://www.rstudio.com/products/RStudio/#Desktop)
+
 Adicionalmente se requiere los paquetes _Shiny_ y _HMisc_, entre otros. A continuación un ejemplo de como instalarlos:
 
 ```{r}
